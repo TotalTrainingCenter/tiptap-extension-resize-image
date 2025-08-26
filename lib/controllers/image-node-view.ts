@@ -124,10 +124,10 @@ export class ImageNodeView {
     this.setupImageAttributes();
 
     const { editable } = this.context.editor.options;
-    if (!editable) return { dom: this.elements.container };
-
-    this.setupContainerClick();
-    this.setupContentClick();
+    if (editable) {
+      this.setupContainerClick();
+      this.setupContentClick();
+    }
 
     return {
       dom: this.elements.wrapper,
