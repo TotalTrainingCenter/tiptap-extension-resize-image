@@ -1,7 +1,7 @@
 import { CONSTANTS } from '../constants';
+import { ImageElements } from '../types';
 import { utils } from '../utils';
 import { AttributeParser } from '../utils/attribute-parser';
-import { ImageElements } from '../types';
 import { PositionController } from './position-controller';
 import { ResizeController } from './resize-controller';
 
@@ -9,7 +9,7 @@ interface NodeViewContext {
   node: any;
   editor: any;
   view: any;
-  getPos: (() => number) | undefined;
+  getPos: (() => number | undefined) | undefined;
 }
 
 export class ImageNodeView {
@@ -38,6 +38,8 @@ export class ImageNodeView {
   private dispatchNodeView = (): void => {
     const { view, getPos } = this.context;
     if (typeof getPos === 'function') {
+      const pos = getPos();
+      if (pos === undefined) return;
       this.clearContainerBorder();
       const newAttrs = {
         ...this.context.node.attrs,
@@ -47,7 +49,7 @@ export class ImageNodeView {
         containerStyle: `${this.elements.container.style.cssText}`,
         wrapperStyle: `${this.elements.wrapper.style.cssText}`,
       };
-      view.dispatch(view.state.tr.setNodeMarkup(getPos(), null, newAttrs));
+      view.dispatch(view.state.tr.setNodeMarkup(pos, null, newAttrs));
     }
   };
 
