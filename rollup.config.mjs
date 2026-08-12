@@ -1,4 +1,5 @@
-import typescript from 'rollup-plugin-typescript2';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import typescript from '@rollup/plugin-typescript';
 
 export default [
   {
@@ -10,8 +11,21 @@ export default [
     external: ['@tiptap/core', '@tiptap/extension-image', '@tiptap/pm', 'tslib'],
     plugins: [
       typescript({
-        tsconfig: './tsconfig.json',
-        useTsconfigDeclarationDir: true,
+        tsconfig: false,
+        compilerOptions: {
+          target: 'es6',
+          module: 'ESNext',
+          moduleResolution: 'node',
+          esModuleInterop: true,
+          jsx: 'react',
+          lib: ['es5', 'es6', 'dom'],
+          declaration: false,
+          declarationMap: false,
+          sourceMap: true,
+        },
+      }),
+      nodeResolve({
+        extensions: ['.mjs', '.js', '.json', '.ts'],
       }),
     ],
   },
